@@ -1,6 +1,11 @@
+@file:OptIn(ExperimentalComposeLibrary::class, ExperimentalKotlinGradlePluginApi::class)
+
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -25,6 +30,7 @@ kotlin {
             }
         }
         publishLibraryVariants("release", "debug")
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
     }
 
     listOf(
@@ -72,6 +78,7 @@ kotlin {
         val nativeMain by getting
         val desktopMain by getting
         val androidMain by getting
+        val androidUnitTest by getting
 
         val jvmMain by creating {
             dependsOn(commonMain)
@@ -98,6 +105,12 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+        androidUnitTest.dependencies {
+            implementation(libs.robolectric)
+            implementation(libs.androidx.test.core)
+            implementation(libs.androidx.ui.test.manifest)
+            implementation(libs.ui.test.junit4.android)
+        }
     }
 }
 
@@ -107,6 +120,7 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     beforeEvaluate {
@@ -120,6 +134,7 @@ android {
     }
     testOptions {
         unitTests.isReturnDefaultValues = true
+        unitTests.isIncludeAndroidResources = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -167,5 +182,15 @@ tasks.register("createTag") {
     doLast {
         exec { commandLine = listOf("git", "tag", libVersion) }
         exec { commandLine = listOf("git", "push", "--tags") }
+    }
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes("*.generated.*")
+            }
+        }
     }
 }
