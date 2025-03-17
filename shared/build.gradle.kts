@@ -184,3 +184,13 @@ tasks.register("createTag") {
         exec { commandLine = listOf("git", "push", "--tags") }
     }
 }
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes("*.generated.*")
+            }
+        }
+    }
+}
