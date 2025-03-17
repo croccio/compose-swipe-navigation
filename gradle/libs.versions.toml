@@ -12,9 +12,15 @@ library-version = "1.0.0"
 kover = "0.9.1"
 maven-publish = "0.31.0"
 compose-multiplatform = "1.7.3"
+robolectric = "4.14.1"
+androidxTest = "1.6.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+ui-test-junit4-android = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "compose-multiplatform" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-multiplatform" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTest" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
