@@ -1,0 +1,26 @@
+[versions]
+agp = "8.5.2"
+kotlin = "2.1.10"
+
+android-compileSdk = "35"
+android-minSdk = "24"
+android-targetSdk = "35"
+
+library-group = "io.github.croccio.csnavigation"
+library-version = "1.0.0"
+
+kover = "0.9.1"
+maven-publish = "0.31.0"
+compose-multiplatform = "1.7.3"
+
+[libraries]
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+
+[plugins]
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
