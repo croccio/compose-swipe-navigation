@@ -1,6 +1,6 @@
 [![Tests](https://github.com/croccio/compose-swipe-navigation/actions/workflows/test.yml/badge.svg)](https://github.com/croccio/compose-swipe-navigation/actions/workflows/test.yml)
 [![Publish](https://github.com/croccio/compose-swipe-navigation/actions/workflows/publish.yml/badge.svg)](https://github.com/croccio/compose-swipe-navigation/actions/workflows/publish.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.croccio.compose-swipe-navigation/shared)](https://central.sonatype.com/search?q=io.github.croccio.compose-swipe-navigation)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.croccio.csnavigation/shared)](https://central.sonatype.com/search?q=io.github.croccio.csnavigation)
 [![MIT](https://img.shields.io/github/license/croccio/compose-swipe-navigation)](https://github.com/croccio/compose-swipe-navigation/blob/main/LICENSE.txt)
 
 # CSNavigation 🚀
