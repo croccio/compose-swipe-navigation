@@ -17,6 +17,12 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.core.app.ComponentActivity
 import androidx.test.core.app.ApplicationProvider
+import it.croccio.compose.swipe.navigation.business.SimpleNavigator
+import it.croccio.compose.swipe.navigation.composable.PagerNavigation
+import it.croccio.compose.swipe.navigation.dto.Route
+import it.croccio.compose.swipe.navigation.dto.RouteArgument
+import it.croccio.compose.swipe.navigation.dto.RouteWithArgument
+import it.croccio.compose.swipe.navigation.dto.Routes
 import org.junit.Rule
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
@@ -26,11 +32,12 @@ import org.robolectric.Shadows
 import kotlin.test.Test
 
 @RunWith(RobolectricTestRunner::class)
-class NavigationSystemTest {
+class PagerNavigationTest {
 
-    data object SimpleRoute : Route()
+    data object SimpleRoute : Route("SimpleRoute")
 
-    data class ArgumentedRoute(override val argument: Argument) : RouteWithArgument(argument) {
+    data class ArgumentedRoute(override val argument: Argument) :
+        RouteWithArgument("ArgumentedRoute", argument) {
         data class Argument(val data: String) : RouteArgument()
     }
 
@@ -93,8 +100,8 @@ class NavigationSystemTest {
 
     @Composable
     private fun TestNavigationSystem() {
-        val navigator = PagerNavigator()
-        NavigationSystem(
+        val navigator = SimpleNavigator()
+        PagerNavigation(
             modifier = Modifier,
             navigator = navigator,
             starterPage = SimpleRoute,

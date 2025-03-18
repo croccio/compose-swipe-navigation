@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'csnavigation'
-    spec.version                  = '1.0.0'
+    spec.version                  = '1.0.1-RC1'
     spec.homepage                 = 'https://github.com/croccio/compose-swipe-navigation.git'
     spec.source                   = { :http=> ''}
     spec.authors                  = 'croccio'

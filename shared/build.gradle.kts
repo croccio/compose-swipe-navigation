@@ -143,8 +143,8 @@ android {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-    signAllPublications()
+    //publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    //signAllPublications()
 
     pom {
         name = "csnavigation"
@@ -183,6 +183,10 @@ tasks.register("createTag") {
         exec { commandLine = listOf("git", "tag", libVersion) }
         exec { commandLine = listOf("git", "push", "--tags") }
     }
+}
+
+compose.resources {
+    generateResClass = always
 }
 
 kover {

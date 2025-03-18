@@ -1,26 +1,30 @@
 package it.croccio.compose.swipe.navigation
 
+import it.croccio.compose.swipe.navigation.business.SimpleNavigator
+import it.croccio.compose.swipe.navigation.dto.Route
+import it.croccio.compose.swipe.navigation.dto.RouteArgument
+import it.croccio.compose.swipe.navigation.dto.RouteWithArgument
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-class PagerNavigatorTest {
+class SimpleNavigatorTest {
 
-    data object SimpleRoute : Route()
+    data object SimpleRoute : Route("Route")
 
-    data class ArgumentedRoute(override val argument: Argument) : RouteWithArgument(argument) {
+    data class ArgumentedRoute(override val argument: Argument) : RouteWithArgument("ArgumentedRoute", argument) {
         data class Argument(val data: String) : RouteArgument()
     }
 
     @Test
     fun `WHEN a navigator is created THEN the stack is empty`() {
-        val navigator = PagerNavigator()
+        val navigator = SimpleNavigator()
 
         assertTrue { navigator.screenStack.isEmpty() }
     }
 
     @Test
     fun `WHEN navigate to a new route THEN the stack contains that route`() {
-        val navigator = PagerNavigator()
+        val navigator = SimpleNavigator()
 
         val firstRoute = SimpleRoute
         val secondRoute = ArgumentedRoute(ArgumentedRoute.Argument("data"))
@@ -34,7 +38,7 @@ class PagerNavigatorTest {
 
     @Test
     fun `WHEN navigate back THEN the route is removed by stack`() {
-        val navigator = PagerNavigator()
+        val navigator = SimpleNavigator()
 
         val firstRoute = SimpleRoute
         val secondRoute = ArgumentedRoute(ArgumentedRoute.Argument("data"))
@@ -51,7 +55,7 @@ class PagerNavigatorTest {
 
     @Test
     fun `WHEN navigate back and there is only one entry in the stack THEN the route is not removed`() {
-        val navigator = PagerNavigator()
+        val navigator = SimpleNavigator()
 
         val firstRoute = SimpleRoute
         val secondRoute = ArgumentedRoute(ArgumentedRoute.Argument("data"))
@@ -69,7 +73,7 @@ class PagerNavigatorTest {
 
     @Test
     fun `WHEN navigate back THEN back override is called`() {
-        val navigator = PagerNavigator()
+        val navigator = SimpleNavigator()
 
         navigator.onBack = { navigator.screenStack.clear() }
 

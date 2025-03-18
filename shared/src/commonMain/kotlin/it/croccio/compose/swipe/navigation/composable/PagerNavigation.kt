@@ -1,4 +1,4 @@
-package it.croccio.compose.swipe.navigation
+package it.croccio.compose.swipe.navigation.composable
 
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,10 +9,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import it.croccio.compose.swipe.navigation.business.Navigator
+import it.croccio.compose.swipe.navigation.business.PageNavigator
+import it.croccio.compose.swipe.navigation.dto.Route
+import it.croccio.compose.swipe.navigation.dto.Routes
 import kotlinx.coroutines.launch
 
 @Composable
-fun NavigationSystem(
+fun PagerNavigation(
     modifier: Modifier = Modifier,
     navigator: Navigator,
     starterPage: Route,
@@ -23,7 +27,7 @@ fun NavigationSystem(
 
     val pagerState = rememberPagerState(
         initialPage = 0,
-        pageCount = { navigator.screenStack.size }
+        pageCount = { navigator.backStack.size },
     )
 
     val coroutineScope = rememberCoroutineScope()
@@ -36,28 +40,35 @@ fun NavigationSystem(
         snapPosition = SnapPosition.Center,
     ) { pageIndex ->
         routes
-            .toScreen(navigator.screenStack[pageIndex])
+            .toScreen(navigator.backStack[pageIndex])
     }
 
     LaunchedEffect(pagerState.pageCount) {
-        pagerState.animateScrollToPage(navigator.screenStack.lastIndex)
+        pagerState.animateScrollToPage(navigator.backStack.lastIndex)
     }
 
     LaunchedEffect(pagerState.currentPageOffsetFraction) {
-        if (pagerState.currentPageOffsetFraction == 0f && pagerState.currentPage < navigator.screenStack.lastIndex) {
-            coroutineScope.launch {
-                navigator.screenStack.removeRange(
-                    pagerState.currentPage + 1,
-                    pagerState.pageCount,
-                )
-            }
+        (navigator as? PageNavigator)?.screenOffset?.value =
+            Pair(pagerState.currentPage, pagerState.currentPageOffsetFraction)
+        if (pagerState.currentPageOffsetFraction == 0f && pagerState.currentPage < navigator.backStack.lastIndex) {
+            navigator.backStack.removeRange(
+                pagerState.currentPage + 1,
+                pagerState.pageCount,
+            )
         }
     }
 
     LaunchedEffect(Unit) {
-        navigator.onBack = {
+        navigator.onBack = { popTo ->
             coroutineScope.launch {
-                pagerState.animateScrollToPage(navigator.screenStack.lastIndex - 1)
+                if (popTo != null) {
+                    navigator.backStack.removeRange(
+                        navigator.backStack.indexOf(popTo) + 1,
+                        pagerState.pageCount
+                    )
+                } else {
+                    pagerState.animateScrollToPage(navigator.backStack.lastIndex - 1)
+                }
             }
         }
         navigator.navigate(starterPage)

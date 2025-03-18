@@ -1,11 +1,9 @@
-package it.croccio.compose.swipe.navigation.ui
+package it.croccio.compose.swipe.navigation.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -29,16 +26,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import it.croccio.compose.swipe.navigation.business.Navigator
+import it.croccio.compose.swipe.navigation.business.PageNavigator
 
 @Composable
 actual fun NavigationBar(
-    modifier: Modifier,
-    actions: @Composable RowScope.() -> Unit,
-    onBackClick: (() -> Unit)?,
-    onNavigation: ((
-        title: @Composable () -> Unit,
-        menu: @Composable () -> Unit,
-    ) -> Unit)?,
+    state: NavigationBarState,
+    navigator: Navigator,
 ) {
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val navBarHeight = 44.dp
@@ -60,21 +54,10 @@ actual fun NavigationBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (onBackClick != null) {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back",
-                        tint = Color.Black,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            } else {
-                Spacer(Modifier.width(24.dp))
-            }
+
 
             Text(
-                text = title,
+                text = "state.title",
                 fontSize = 17.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
@@ -82,7 +65,7 @@ actual fun NavigationBar(
             )
 
             Row(horizontalArrangement = Arrangement.End) {
-                actions()
+                state.actions(this)
             }
         }
     }

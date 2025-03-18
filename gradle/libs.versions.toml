@@ -7,7 +7,7 @@ android-minSdk = "24"
 android-targetSdk = "35"
 
 library-group = "io.github.croccio.csnavigation"
-library-version = "1.0.0"
+library-version = "1.0.1-RC1"
 
 kover = "0.9.1"
 maven-publish = "0.31.0"
