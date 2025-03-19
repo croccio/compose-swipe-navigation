@@ -19,7 +19,7 @@ class SimpleNavigatorTest {
     fun `WHEN a navigator is created THEN the stack is empty`() {
         val navigator = SimpleNavigator()
 
-        assertTrue { navigator.screenStack.isEmpty() }
+        assertTrue { navigator.backStack.isEmpty() }
     }
 
     @Test
@@ -30,10 +30,10 @@ class SimpleNavigatorTest {
         val secondRoute = ArgumentedRoute(ArgumentedRoute.Argument("data"))
 
         navigator.navigate(route = firstRoute)
-        assertTrue { navigator.screenStack[0] == firstRoute }
+        assertTrue { navigator.backStack[0] == firstRoute }
 
         navigator.navigate(secondRoute)
-        assertTrue { navigator.screenStack[1] == secondRoute }
+        assertTrue { navigator.backStack[1] == secondRoute }
     }
 
     @Test
@@ -45,11 +45,11 @@ class SimpleNavigatorTest {
 
         navigator.navigate(route = firstRoute)
         navigator.navigate(secondRoute)
-        assertTrue { navigator.screenStack.size == 2 }
+        assertTrue { navigator.backStack.size == 2 }
 
         navigator.popBackStack()
-        assertTrue { navigator.screenStack[0] == firstRoute }
-        assertTrue { navigator.screenStack.size == 1 }
+        assertTrue { navigator.backStack[0] == firstRoute }
+        assertTrue { navigator.backStack.size == 1 }
 
     }
 
@@ -67,7 +67,7 @@ class SimpleNavigatorTest {
         navigator.popBackStack()
         navigator.popBackStack()
 
-        assertTrue { navigator.screenStack.size == 1 }
+        assertTrue { navigator.backStack.size == 1 }
 
     }
 
@@ -75,7 +75,7 @@ class SimpleNavigatorTest {
     fun `WHEN navigate back THEN back override is called`() {
         val navigator = SimpleNavigator()
 
-        navigator.onBack = { navigator.screenStack.clear() }
+        navigator.onBack = { navigator.backStack.clear() }
 
         val firstRoute = SimpleRoute
         val secondRoute = ArgumentedRoute(ArgumentedRoute.Argument("data"))
@@ -85,7 +85,7 @@ class SimpleNavigatorTest {
 
         navigator.popBackStack()
 
-        assertTrue { navigator.screenStack.isEmpty() }
+        assertTrue { navigator.backStack.isEmpty() }
 
     }
 
