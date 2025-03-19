@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.croccio.csnavigation.shared.generated.resources.Res
 import io.github.croccio.csnavigation.shared.generated.resources.back_button
-import it.croccio.compose.swipe.navigation.business.Navigator
+import it.croccio.compose.swipe.navigation.business.INavigator
 import org.jetbrains.compose.resources.painterResource
 import kotlin.math.absoluteValue
 
@@ -27,7 +27,7 @@ import kotlin.math.absoluteValue
 @Composable
 fun BackButton(
     modifier: Modifier,
-    navigator: Navigator,
+    navigator: INavigator,
     animationOffset: Pair<Int, Float>,
 ) {
 

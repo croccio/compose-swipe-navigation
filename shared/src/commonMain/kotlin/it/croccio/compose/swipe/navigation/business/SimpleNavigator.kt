@@ -2,7 +2,7 @@ package it.croccio.compose.swipe.navigation.business
 
 import it.croccio.compose.swipe.navigation.dto.Route
 
-open class SimpleNavigator() : Navigator {
+open class SimpleNavigator() : INavigator {
 
     override val backStack = ScreenStack()
 

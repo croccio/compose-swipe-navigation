@@ -19,13 +19,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import it.croccio.compose.swipe.navigation.business.Navigator
+import it.croccio.compose.swipe.navigation.business.INavigator
 import kotlinx.coroutines.launch
 
 @Composable
 actual fun NavigationBar(
     state: NavigationBarState,
-    navigator: Navigator,
+    navigator: INavigator,
 ) {
 
     val backStack by derivedStateOf { navigator.backStack }

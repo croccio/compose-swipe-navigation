@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import it.croccio.compose.swipe.navigation.business.Navigator
+import it.croccio.compose.swipe.navigation.business.INavigator
 import it.croccio.compose.swipe.navigation.dto.MenuItem
 
 @Stable
@@ -26,5 +26,5 @@ fun rememberNavigationBarState(
 @Composable
 expect fun NavigationBar(
     state: NavigationBarState,
-    navigator: Navigator,
+    navigator: INavigator,
 )

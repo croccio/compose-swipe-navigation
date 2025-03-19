@@ -9,8 +9,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import it.croccio.compose.swipe.navigation.business.Navigator
-import it.croccio.compose.swipe.navigation.business.PageNavigator
+import it.croccio.compose.swipe.navigation.business.INavigator
+import it.croccio.compose.swipe.navigation.business.OffsetPageNavigator
 import it.croccio.compose.swipe.navigation.dto.Route
 import it.croccio.compose.swipe.navigation.dto.Routes
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PagerNavigation(
     modifier: Modifier = Modifier,
-    navigator: Navigator,
+    navigator: INavigator,
     starterPage: Route,
     routes: Routes,
 ) {
@@ -48,7 +48,7 @@ fun PagerNavigation(
     }
 
     LaunchedEffect(pagerState.currentPageOffsetFraction) {
-        (navigator as? PageNavigator)?.screenOffset?.value =
+        (navigator as? OffsetPageNavigator)?.screenOffset?.value =
             Pair(pagerState.currentPage, pagerState.currentPageOffsetFraction)
         if (pagerState.currentPageOffsetFraction == 0f && pagerState.currentPage < navigator.backStack.lastIndex) {
             navigator.backStack.removeRange(

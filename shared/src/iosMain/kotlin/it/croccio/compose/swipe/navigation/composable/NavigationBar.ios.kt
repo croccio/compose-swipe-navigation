@@ -19,13 +19,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import it.croccio.compose.swipe.navigation.business.Navigator
-import it.croccio.compose.swipe.navigation.business.PageNavigator
+import it.croccio.compose.swipe.navigation.business.INavigator
+import it.croccio.compose.swipe.navigation.business.OffsetPageNavigator
 
 @Composable
 actual fun NavigationBar(
     state: NavigationBarState,
-    navigator: Navigator,
+    navigator: INavigator,
 ) {
 
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -33,7 +33,7 @@ actual fun NavigationBar(
     val totalHeight = navBarHeight + statusBarHeight
 
     val animationOffset by remember {
-        (navigator as? PageNavigator)?.screenOffset ?: mutableStateOf(Pair(0, 0f))
+        (navigator as? OffsetPageNavigator)?.screenOffset ?: mutableStateOf(Pair(0, 0f))
     }
 
     val menuItems = remember { state.menuItems }
