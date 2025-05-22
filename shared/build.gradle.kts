@@ -1,6 +1,5 @@
 @file:OptIn(ExperimentalComposeLibrary::class, ExperimentalKotlinGradlePluginApi::class)
 
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -8,13 +7,14 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.kotlinCocoapods)
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kover)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.cocoapods)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlinx.kover)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.vanniktech.mavenPublish)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.compiler)
 }
 
 group = libs.versions.library.group.get()
@@ -79,11 +79,8 @@ kotlin {
         val desktopMain by getting
         val androidMain by getting
         val androidUnitTest by getting
+        val iosMain by getting
 
-        val jvmMain by creating {
-            dependsOn(commonMain)
-        }
-        androidMain.dependsOn(jvmMain)
         androidMain.dependencies { }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -92,15 +89,19 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            implementation(libs.kotlinx.serialization.properties)
+            implementation(libs.kotlinx.serialization.json)
         }
 
-        val nonJvmMain by creating {
+        val nonWasm by creating {
             dependsOn(commonMain)
-            nativeMain.dependsOn(this)
-            wasmJsMain.dependsOn(this)
+            androidMain.dependsOn(this)
+            desktopMain.dependsOn(this)
+            iosMain.dependsOn(this)
             dependencies { }
         }
-        desktopMain.dependsOn(jvmMain)
+
         desktopMain.dependencies { }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

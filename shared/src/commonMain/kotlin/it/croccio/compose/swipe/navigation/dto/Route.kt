@@ -1,17 +1,34 @@
 package it.croccio.compose.swipe.navigation.dto
 
 import androidx.compose.runtime.Composable
+import it.croccio.compose.swipe.navigation.utils.DynamicLookupSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.properties.Properties
 
-open class RouteArgument
+fun toParams(any: @Serializable Any): String =
+    Properties
+        .encodeToMap(DynamicLookupSerializer(), any)
+        .map { (key, value) ->
+            "$key=$value"
+        }
+        .joinToString("&")
 
-abstract class Route(
-    open val title: String,
-)
+interface Route {
+    val title: String
+    val basePath: String?
+        get() = "/${this::class.simpleName}"
 
-abstract class RouteWithArgument(
-    override val title: String,
-    open val argument: RouteArgument,
-) : Route(title)
+    fun toPath(): String =
+        basePath ?: "/${this::class.simpleName}"
+
+}
+
+interface RouteWithArgument<T : Any> : Route {
+    val argument: T
+
+    override fun toPath(): String =
+        "${super.toPath()}?${toParams(argument)}"
+}
 
 interface Routes {
 
